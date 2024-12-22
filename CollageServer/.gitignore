@@ -1,0 +1,10 @@
+# Java (Spring Boot) ignore
+target/
+*.class
+*.war
+*.jar
+*.log
+/.idea
+/.mvn
+/.settings
+/node_modules/
