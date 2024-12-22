@@ -1,10 +1,10 @@
-package com.hotelServer;
+package com.CollageServer;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class HotelServerApplicationTests {
+class CollageServerApplicationTests {
 
 	@Test
 	void contextLoads() {
