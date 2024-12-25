@@ -1,0 +1,45 @@
+.admin {
+  display: grid;
+  place-items: center;
+  margin-left: 30%;
+  margin-top: 10%;
+  padding: 20px;
+  width: 100%;
+  max-width: 500px;
+  background-color: #e3f2fd;
+  border-radius: 9px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  position: relative;
+}
+.attributes {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 10px;
+}
+
+.sub-attributes button {
+  margin: 10px;
+  display: block;
+  cursor: pointer;
+  border: none;
+  font-size: 16px;
+  font-weight: 400;
+  background-color: #e3f2fd;
+}
+
+.sub-attributes button:hover {
+  text-decoration: underline;
+  color: rgb(248, 0, 0);
+}
+.attributes1 {
+  padding: 10px;
+  margin: 5px;
+}
+.sub-attributes1 {
+  margin: 5px;
+}
+.sub-attributes1 li {
+  cursor: pointer;
+  margin: 9px;
+}
