@@ -1,5 +1,7 @@
 package com.main.controller;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,8 +13,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.main.DTO.GradeDTO;
 import com.main.DTO.HelperDTO;
+import com.main.DTO.ResponseDTO;
 import com.main.DTO.StudentDTO;
-import com.main.credientials.User;
 import com.main.credientials.service.UserService;
 import com.main.service.GradeService;
 import com.main.service.StudentService;
@@ -28,10 +30,11 @@ public class UserController {
 	private final GradeService gradeService;
 
 	@PutMapping("updatePassword")
-	public User updatePassword(@RequestBody HelperDTO newPassword)
+	public ResponseEntity<ResponseDTO> updatePassword(@RequestBody HelperDTO newPassword)
 	{
 		String rollno=((UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
-		return userService.updatePassword(rollno,newPassword.getPassword());
+		 userService.updatePassword(rollno,newPassword.getPassword());
+		 return ResponseEntity.status(HttpStatus.OK).body(new ResponseDTO(HttpStatus.OK,"Password Updated Sucessfully" ));
 	}
 
 
@@ -42,19 +45,16 @@ public class UserController {
 	}
 
 	@GetMapping("/getStudent")
-	public StudentDTO getStudent(@RequestParam(required = false) String RollNo)
+	public ResponseEntity<StudentDTO> getStudent(@RequestParam(required = false) String RollNo)
 	{
 		UserDetails de=(UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		String roll_no=de.getUsername();
 		boolean isAdmin=de.getAuthorities().stream().anyMatch(authrotie -> authrotie.getAuthority().equals("ROLE_ADMIN"));
-		
 		if(isAdmin && RollNo != null)
 		{
-		
-			return studentService.getStudentByRollNo(RollNo);
+			return ResponseEntity.status(HttpStatus.OK).body(studentService.getStudentByRollNo(RollNo));
 		}
-		return studentService.getStudentByRollNo(roll_no);
-		
+		return ResponseEntity.status(HttpStatus.OK).body(studentService.getStudentByRollNo(roll_no)) ;
 	}
 	@GetMapping("getGrade")
 	public GradeDTO getGrades()

@@ -12,6 +12,8 @@ import com.main.entity.Department;
 import com.main.entity.Grade;
 import com.main.entity.Student;
 import com.main.enums.UserRole;
+import com.main.excepation.FeildCannotBeNullExcepation;
+import com.main.excepation.StudentAleadyExistsWithThisRollNoExcepation;
 import com.main.repo.GradeRepo;
 import com.main.repo.StudentRepo;
 
@@ -30,27 +32,43 @@ public class StudentService {
 	@Transactional
 	public Student addStudent(Student student) {
 		
+		if(studentRepo.findByRollNo(student.getRoll_no()) !=null)
+		{
+			throw new StudentAleadyExistsWithThisRollNoExcepation("Plese Verify the Details of Student with this RollNo:"+student.getRoll_no());
+		}
+		
 		 if (student.getRoll_no() == null || student.getRoll_no().isEmpty()) {
-		        throw new IllegalArgumentException("Roll_no must not be null or empty");
+		        throw new FeildCannotBeNullExcepation("Roll_no must not be null or empty");
 		    }
 		Department dep=departmentService.findByCode(student.getDepartment().getDepertamentCode());
 		if (dep==null) {
-		    throw new IllegalArgumentException("Department or department code cannot be null.");
+		    throw new FeildCannotBeNullExcepation("Department or department code cannot be null.");
 		}
 		student.setDepartment(dep);
-		studentRepo.save(student);
+		 Student s1=studentRepo.save(student);
+		 User user=addUser(s1);
+		userRepo.save(user);
+		Grade grade=addGrade(s1);
+		gradeRepo.save(grade);
+		
+		return student;
+	}
+	public Grade addGrade(Student student)
+	{
+		Grade g=new Grade();
+		g.setStudent(student);
+		g.setGrade("A+");
+		return g;
+	}
+	
+	public User addUser(Student student)
+	{
 		User u=new User();
 		u.setName(student.getName());
 		u.setRoll_no(student.getRoll_no());
 		u.setRole(UserRole.USER);
 		u.setPassword(student.getRoll_no());
-		userRepo.save(u);
-		Grade grade=new Grade();
-		grade.setStudent(student);
-		grade.setGrade("A+");
-		gradeRepo.save(grade);
-		
-		return student;
+		return u;
 	}
 
 	public StudentDTO getStudentByRollNo(String roll_no) {
@@ -65,7 +83,6 @@ public class StudentService {
 						.map(this::StudentDtoConvert)
 						.collect(Collectors.toList());
 	}
-	
 	public List<StudentDTO> findByBranchCode(String branchCode) {
 		
 		 return studentRepo
@@ -83,9 +100,4 @@ public class StudentService {
 	    dto.setDepartmentName(student.getDepartment().getDepertamentName());
 	    return dto;
 	}
-
-
-
-
-
 }

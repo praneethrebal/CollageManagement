@@ -1,5 +1,7 @@
 package com.main.entity;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -16,6 +18,7 @@ public class Student {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	@Column(name="Roll_no",nullable = false,unique = true)
+	@JsonProperty("Roll_no")
 	private String Roll_no;
 	@Column(name = "Std_Name",nullable = false)
 	private String name;

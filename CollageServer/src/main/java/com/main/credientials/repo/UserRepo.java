@@ -10,6 +10,6 @@ import com.main.credientials.User;
 @Repository
 public interface UserRepo extends JpaRepository<User, Long>{
 	@Query("select u from User u where u.Roll_no=:rollNo")
-	User findByRollNo(String rollNo);
+	User findByRoll_no(String rollNo);
 
 }
