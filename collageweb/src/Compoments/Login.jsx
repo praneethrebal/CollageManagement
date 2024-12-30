@@ -24,14 +24,11 @@ const Login = () => {
       })
       .catch((res) => {
         if (res.response) {
-          if (res.response.status === 404) {
-            alert("User not found");
-          } else if (res.response.status === 401) {
-            alert(
-              "Invalid credentials, please check your username or password."
-            );
+          const { status, data } = res.response;
+          if (status === 404) {
+            alert(`User ${data.errorResponse}`);
           } else {
-            console.log(res.error);
+            console.log(res.data);
           }
         } else alert("Network error, please try again later.");
       });

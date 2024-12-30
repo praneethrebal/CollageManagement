@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 
 import com.main.credientials.User;
 import com.main.credientials.repo.UserRepo;
-import com.main.excepation.UserNotFoundExcepation;
+import com.main.excepation.UserNotFoundException;
 import com.main.principal.UserPricipal;
 
 import lombok.AllArgsConstructor;
@@ -15,11 +15,11 @@ import lombok.AllArgsConstructor;
 public class MyUserDetailsService implements UserDetailsService {
 	private final UserRepo userRepo;
 	@Override
-	public UserDetails loadUserByUsername(String username) throws UserNotFoundExcepation {
+	public UserDetails loadUserByUsername(String username) throws UserNotFoundException {
 		User user=userRepo.findByRoll_no(username);
 		if(user == null)
 		{
-			throw new UserNotFoundExcepation(username+"Not in DB");
+			throw new UserNotFoundException(username+"Not in DB");
 		}
 		return new UserPricipal(user);
 	}

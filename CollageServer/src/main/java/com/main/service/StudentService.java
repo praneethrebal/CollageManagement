@@ -12,8 +12,8 @@ import com.main.entity.Department;
 import com.main.entity.Grade;
 import com.main.entity.Student;
 import com.main.enums.UserRole;
-import com.main.excepation.FeildCannotBeNullExcepation;
-import com.main.excepation.StudentAleadyExistsWithThisRollNoExcepation;
+import com.main.excepation.FieldCannotBeNullException;
+import com.main.excepation.StudentAlreadyExistsWithThisRollNoException;
 import com.main.repo.GradeRepo;
 import com.main.repo.StudentRepo;
 
@@ -34,15 +34,15 @@ public class StudentService {
 		
 		if(studentRepo.findByRollNo(student.getRoll_no()) !=null)
 		{
-			throw new StudentAleadyExistsWithThisRollNoExcepation("Plese Verify the Details of Student with this RollNo:"+student.getRoll_no());
+			throw new StudentAlreadyExistsWithThisRollNoException("Plese Verify the Details of Student with this RollNo:"+student.getRoll_no());
 		}
 		
 		 if (student.getRoll_no() == null || student.getRoll_no().isEmpty()) {
-		        throw new FeildCannotBeNullExcepation("Roll_no must not be null or empty");
+		        throw new FieldCannotBeNullException("Roll_no must not be null or empty");
 		    }
 		Department dep=departmentService.findByCode(student.getDepartment().getDepertamentCode());
 		if (dep==null) {
-		    throw new FeildCannotBeNullExcepation("Department or department code cannot be null.");
+		    throw new FieldCannotBeNullException("Department or department code cannot be null.");
 		}
 		student.setDepartment(dep);
 		 Student s1=studentRepo.save(student);

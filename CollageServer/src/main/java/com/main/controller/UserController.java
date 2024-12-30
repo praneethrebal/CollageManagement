@@ -57,12 +57,12 @@ public class UserController {
 		return ResponseEntity.status(HttpStatus.OK).body(studentService.getStudentByRollNo(roll_no)) ;
 	}
 	@GetMapping("getGrade")
-	public GradeDTO getGrades()
+	public ResponseEntity<GradeDTO> getGrades()
 	{
 		
 		UserDetails details=(UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		String roll_no=details.getUsername();
-		return gradeService.getGrade(roll_no);
+		 return ResponseEntity.status(HttpStatus.OK).body(gradeService.getGrade(roll_no));
 	}
 
 

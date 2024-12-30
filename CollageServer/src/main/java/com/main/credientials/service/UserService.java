@@ -10,8 +10,8 @@ import org.springframework.stereotype.Service;
 
 import com.main.credientials.User;
 import com.main.credientials.repo.UserRepo;
-import com.main.excepation.SamePasswordExcepation;
-import com.main.excepation.UserNotFoundExcepation;
+import com.main.excepation.SamePasswordException;
+import com.main.excepation.UserNotFoundException;
 import com.main.security.service.JwtService;
 
 import lombok.RequiredArgsConstructor;
@@ -25,13 +25,13 @@ public class UserService {
 	public User findUser(String username,String password) {
 		User user=userRepo.findByRoll_no(username);
 		  if (user == null ) {
-			  throw new UserNotFoundExcepation("not found");
+			  throw new UserNotFoundException("not found");
 	        }
 		  if( !user.getPassword().equals(password) || !user.getRoll_no().equals(username) )
 		  {
 			  Map<String,String> err=new HashMap<>();
 			  err.put("error", "Details not match");
-			  throw new  UserNotFoundExcepation("not found");
+			  throw new  UserNotFoundException("not found");
 		  }
 
 		return userRepo.findByRoll_no(username);
@@ -55,7 +55,7 @@ public class UserService {
 		User u1= userRepo.findByRoll_no(user);
 		if(u1.getPassword().equals(user))
 		{
-			throw new SamePasswordExcepation(newPassword+"Old password and new Password cannot be same");
+			throw new SamePasswordException(newPassword+"Old password and new Password cannot be same");
 		}
 		u1.setPassword(newPassword);
 
